@@ -43,7 +43,7 @@ if (isset($_POST['register'])) {
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #0f172a; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #610201; }
     </style>
 </head>
 <body class="flex items-center justify-center min-h-screen p-6">
@@ -69,9 +69,9 @@ if (isset($_POST['register'])) {
                         <select name="jurusan" required 
                             class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-red-800 transition-all text-sm font-medium">
                             <option value="">Pilih Jurusan</option>
-                            <option value="TKJ">Teknik Komputer & Jaringan</option>
-                            <option value="RPL">Rekayasa Perangkat Lunak</option>
-                            <option value="TJA">Teknik Jaringan Akses</option>
+                            <option value="Teknik Komputer & Jaringan">Teknik Komputer & Jaringan</option>
+                            <option value="Rekayasa Perangkat Lunak">Rekayasa Perangkat Lunak</option>
+                            <option value="Teknik Jaringan Akses Telekomunikasi">Teknik Jaringan Akses Telekomunikasi</option>
                             <option value="Animasi">Animasi</option>
                         </select>
                     </div>
