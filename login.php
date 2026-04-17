@@ -65,7 +65,8 @@ if (isset($_POST['login'])) {
                 <div class="flex justify-center mb-6">
                     <img src="img/Logo.png" alt="Logo Alumni" class="h-16 w-auto drop-shadow-2xl">
                 </div>
-                <h2 class="text-3xl font-extrabold text-red-950 tracking-tight">Data Alumni</h2>
+                <h2 class="text-3xl font-extrabold text-red-950 tracking-tight">Selamat Datang</h2>
+                <p class="text-md font-bold text-black/50 tracking-tight">Di Data Alumni</p>
             </div>
 
             <div class="p-10">
@@ -76,9 +77,9 @@ if (isset($_POST['login'])) {
                 </div>
                 <?php } ?>
 
-                <form method="POST" class="space-y-6">
+                <form method="POST" class="space-y-3">
                     <div class="group">
-                        <label class="block text-[10px] font-black text-slate-400 mb-2 ml-1 uppercase tracking-[0.2em] group-focus-within:text-red-800 transition-colors">
+                        <label class="block text-[10px] font-black text-slate-400 mb-1 ml-1 uppercase tracking-[0.2em] group-focus-within:text-red-800 transition-colors">
                             Identitas Pengguna
                         </label>
                         <div class="relative">
