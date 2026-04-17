@@ -37,7 +37,7 @@ if (isset($_POST['submit'])) {
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class="bg-gray-50 flex items-center justify-center min-h-screen p-4">
+<body class="bg-red-950 flex items-center justify-center min-h-screen p-4">
 
     <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md border border-gray-100 relative overflow-hidden">
         
