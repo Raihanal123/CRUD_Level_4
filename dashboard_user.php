@@ -15,8 +15,6 @@ $id_login = $_SESSION['id'];
 $keyword = "";
 if (isset($_POST['search'])) {
     $keyword = mysqli_real_escape_string($koneksi, $_POST['keyword']);
-    // Kita tetap menampilkan semua alumni agar bisa dicari, 
-    // tapi nanti di bagian tombol Edit kita seleksi berdasarkan ID.
     $query = "SELECT * FROM alumni WHERE 
               nama LIKE '%$keyword%' OR 
               angkatan LIKE '%$keyword%' OR 
@@ -44,7 +42,6 @@ $total_alumni = mysqli_num_rows($data);
         ::-webkit-scrollbar-track { background: #f1f1f1; }
         ::-webkit-scrollbar-thumb { background: #7f1d1d; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: #991b1b; }
-        /* Perbaikan agar Navbar tidak transparan saat di-scroll */
         nav { background-color: white !important; }
     </style>
 </head>
@@ -121,9 +118,12 @@ $total_alumni = mysqli_num_rows($data);
                             <tr class="group hover:bg-slate-50/50 transition-all duration-300">
                                 <td class="py-7 px-8">
                                     <div class="flex items-center gap-4">
-                                        <div class="w-12 h-12 rounded-2xl bg-slate-100 flex items-center justify-center text-red-800 font-bold group-hover:bg-white group-hover:shadow-md transition-all">
-                                            <?= substr($row['nama'], 0, 1); ?>
+                                        <div class="flex-shrink-0">
+                                            <img src="uploads/<?= ($row['foto'] != '') ? $row['foto'] : 'default.png' ?>" 
+                                                 alt="Foto <?= $row['nama']; ?>" 
+                                                 class="w-12 h-12 rounded-2xl object-cover border-2 border-white shadow-sm group-hover:shadow-md transition-all">
                                         </div>
+                                        
                                         <div>
                                             <div class="font-bold text-slate-800 text-lg"><?= $row['nama']; ?></div>
                                             <?php if ($row['id_user'] == $id_login) : ?>
