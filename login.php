@@ -42,7 +42,10 @@ if (isset($_POST['login'])) {
     <style>
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background: #610201; /* Warna gelap solid agar lebih fokus */
+            background-image: url(img/Telkom.jpeg);
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
         }
     </style>
 </head>

@@ -84,7 +84,7 @@ if (isset($_POST['update'])) {
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #670404; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-image: url(img/Telkom.jpeg); background-size: cover; background-position: center; }
     </style>
 </head>
 <body class="flex items-center justify-center min-h-screen p-6">
@@ -94,7 +94,7 @@ if (isset($_POST['update'])) {
             
             <div class="pt-8 pb-4 text-center">
                 <div class="relative inline-block group">
-                    <img src="uploads/<?= ($data['foto'] != '') ? $data['foto'] : 'default.webp' ?>" 
+                    <img src="uploads/<?= ($data['foto'] != '') ? $data['foto'] : 'img/profile.jpg' ?>" 
                          alt="Profile" 
                          class="w-24 h-24 rounded-3xl object-cover border-4 border-slate-50 shadow-lg">
                     

@@ -2,67 +2,73 @@
 session_start();
 include 'koneksi.php';
 
-// Pastikan user sudah login
+// 1. PROTEKSI HALAMAN: Cek apakah sudah login
 if (!isset($_SESSION['login'])) {
     header("Location: login.php");
     exit;
 }
 
-// Ambil ID user yang sedang login dari session
-$id_login = $_SESSION['id']; 
-
-// Menangani Pencarian
+// 2. LOGIKA PENCARIAN
 $keyword = "";
 if (isset($_POST['search'])) {
     $keyword = mysqli_real_escape_string($koneksi, $_POST['keyword']);
     $query = "SELECT * FROM alumni WHERE 
               nama LIKE '%$keyword%' OR 
               angkatan LIKE '%$keyword%' OR 
-              jurusan LIKE '%$keyword%'";
+              jurusan LIKE '%$keyword%' 
+              ORDER BY id_alumni DESC";
 } else {
-    $query = "SELECT * FROM alumni";
+    $query = "SELECT * FROM alumni ORDER BY id_alumni DESC";
 }
 
 $data = mysqli_query($koneksi, $query);
-$total_alumni = mysqli_num_rows($data);
+
+if (!$data) {
+    die("Error pada database: " . mysqli_error($koneksi));
+}
 ?>
 
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard User | Alumni</title>
+    <title>Dashboard Alumni | SMK Telkom Lampung</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background-attachment: fixed;
+        }
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.7) !important;
+            backdrop-filter: blur(12px) saturate(180%);
+            -webkit-backdrop-filter: blur(12px) saturate(180%);
+        }
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #f1f1f1; }
         ::-webkit-scrollbar-thumb { background: #7f1d1d; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: #991b1b; }
-        nav { background-color: white !important; }
     </style>
 </head>
 
-<body class="bg-[#f8fafc] flex flex-col min-h-screen text-slate-800">
+<body class="bg-[url('img/Telkom.jpeg')] bg-cover bg-center flex flex-col min-h-screen text-slate-800">
 
-    <nav class="bg-white shadow-xl sticky top-0 z-50 border-b border-slate-100">
+    <nav class="glass-nav sticky top-0 z-50 border-b border-slate-200/50 shadow-sm">
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-            <div class="flex items-center">
-                <a href="dashboard_user.php" class="hover:opacity-80 transition-opacity">
-                    <img src="img/Logo.png" alt="Logo Alumni" class="h-10 md:h-12 w-auto object-contain">
-                </a>
+            <div class="flex items-center gap-4">
+                <img src="img/Logo.png" alt="Logo" class="h-10 md:h-12 w-auto object-contain">
+                <div class="hidden md:block h-8 w-[1px] bg-slate-200/60 mx-2"></div>
+                <span class="hidden md:block text-[10px] font-black text-slate-900 uppercase tracking-[0.2em]">Direktori Alumni</span>
             </div>
 
             <div class="flex items-center gap-4">
-                <div class="hidden md:block text-right mr-2">
-                    <p class="text-xs font-black text-slate-400 uppercase tracking-widest mb-0.5">User Aktif</p>
-                    <p class="text-sm font-bold text-red-900"><?= $_SESSION['username'] ?? 'Rekan Alumni'; ?></p>
+                <div class="hidden sm:flex flex-col items-end mr-2">
+                    <span class="text-[9px] font-black text-slate-900 uppercase tracking-widest">Selamat Datang,</span>
+                    <span class="text-sm font-bold text-red-800"><?= $_SESSION['username']; ?></span>
                 </div>
-                <a href="logout.php" 
-                   class="bg-red-800 hover:bg-red-900 text-white px-5 py-2.5 rounded-xl text-xs font-bold shadow-lg shadow-red-900/20 transition-all active:scale-95">
+                <a href="logout.php" onclick="return confirm('Yakin ingin keluar?')" 
+                   class="bg-red-600 hover:bg-red-700 transition-all px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest text-white shadow-lg shadow-red-900/20 active:scale-95">
                     Logout
                 </a>
             </div>
@@ -70,84 +76,84 @@ $total_alumni = mysqli_num_rows($data);
     </nav>
 
     <main class="flex-grow p-6 md:p-12 lg:px-24">
-        <div class="max-w-6xl mx-auto">
+        <div class="max-w-7xl mx-auto">
             
-            <div class="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-4">
-                <div>
-                    <h2 class="text-4xl font-extrabold text-slate-900 tracking-tight">Daftar Alumni</h2>
-                    <p class="text-slate-500 mt-2 font-medium">Terhubung dengan <span class="text-red-800 font-bold"><?= $total_alumni ?></span> rekan sejawat.</p>
-                </div>
-                <div class="bg-white px-5 py-2.5 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-3 w-fit">
-                    <div class="w-2.5 h-2.5 bg-green-500 rounded-full animate-pulse"></div>
-                    <span class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Akses User Terbatas</span>
-                </div>
+            <div class="mb-10 glass-nav sticky top-0 z-40 border-b border-slate-200/50 rounded-lg  text-center md:text-left">
+                <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight">Daftar Rekan Alumni</h2>
+                <p class="text-slate-600 mt-1 font-medium italic">Temukan dan jalin kembali koneksi dengan rekan satu almamater</p>
             </div>
 
             <div class="mb-12 flex justify-center">
                 <form action="" method="POST" class="relative w-full max-w-4xl group">
-                    <input type="text" name="keyword" value="<?= htmlspecialchars($keyword) ?>" placeholder="Cari rekan berdasarkan nama, angkatan, atau jurusan..." 
-                           class="w-full pl-6 pr-16 py-4 rounded-[1.5rem] border-2 border-slate-200 bg-white focus:outline-none focus:border-red-800 focus:ring-4 focus:ring-red-50 transition-all shadow-md text-lg">
+                    <input type="text" name="keyword" value="<?= htmlspecialchars($keyword) ?>" placeholder="Cari nama rekan atau jurusan..." 
+                           class="w-full pl-6 pr-20 py-5 rounded-[2rem] border-2 border-slate-100 bg-white focus:outline-none focus:border-red-800 focus:ring-8 focus:ring-red-900/5 transition-all shadow-xl shadow-slate-200/50 text-lg font-medium">
                     
-                    <div class="absolute right-3 top-2.5 flex items-center gap-2">
+                    <div class="absolute right-4 top-3 flex items-center gap-2">
                         <?php if($keyword != ""): ?>
-                            <a href="dashboard_user.php" class="p-2 bg-slate-100 hover:bg-red-100 text-slate-400 hover:text-red-700 rounded-xl transition-all">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"/></svg>
+                            <a href="dashboard_user.php" class="p-3 bg-slate-100 hover:bg-red-100 text-slate-400 hover:text-red-700 rounded-2xl transition-all">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path></svg>
                             </a>
                         <?php endif; ?>
-                        <button type="submit" name="search" class="bg-red-800 text-white p-2.5 rounded-xl hover:bg-red-900 transition-all">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                        <button type="submit" name="search" class="bg-red-800 text-white p-3 rounded-2xl hover:bg-red-900 transition-all active:scale-90">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                         </button>
                     </div>
                 </form>
             </div>
 
-            <div class="bg-white rounded-[2.5rem] overflow-hidden border border-slate-200 shadow-sm transition-all">
+            <div class="bg-white/90 backdrop-blur-sm rounded-[2.5rem] overflow-hidden border border-slate-200 shadow-2xl transition-all">
                 <div class="overflow-x-auto">
                     <table class="min-w-full">
                         <thead>
-                            <tr class="bg-slate-50/80 border-b border-slate-100">
-                                <th class="py-6 px-8 text-left text-[11px] font-black text-slate-400 uppercase tracking-widest">Informasi Dasar</th>
-                                <th class="py-6 px-6 text-left text-[11px] font-black text-slate-400 uppercase tracking-widest">Angkatan</th>
-                                <th class="py-6 px-6 text-left text-[11px] font-black text-slate-400 uppercase tracking-widest">Program Studi</th>
-                                <th class="py-6 px-8 text-center text-[11px] font-black text-slate-400 uppercase tracking-widest">Opsi</th>
+                            <tr class="bg-slate-50/50 border-b border-slate-100">
+                                <th class="py-6 px-8 text-center text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] w-24">No</th>
+                                <th class="py-6 px-6 text-left text-xs font-black text-slate-500 uppercase tracking-widest">Profil Alumni</th>
+                                <th class="py-6 px-6 text-left text-xs font-black text-slate-500 uppercase tracking-widest">Angkatan</th>
+                                <th class="py-6 px-6 text-left text-xs font-black text-slate-500 uppercase tracking-widest">Jurusan</th>
                             </tr>
                         </thead>
 
                         <tbody class="divide-y divide-slate-50">
-                            <?php while ($row = mysqli_fetch_assoc($data)) { ?>
-                            <tr class="group hover:bg-slate-50/50 transition-all duration-300">
-                                <td class="py-7 px-8">
+                            <?php 
+                            $no = 1;
+                            if(mysqli_num_rows($data) > 0) {
+                                while ($row = mysqli_fetch_assoc($data)) { 
+                            ?>
+                            <tr class="group hover:bg-red-50/30 transition-all duration-300">
+                                <td class="py-7 px-8 text-center">
+                                    <span class="text-sm font-black text-slate-300 group-hover:text-red-700 transition-colors">#<?= str_pad($no++, 2, '0', STR_PAD_LEFT); ?></span>
+                                </td>
+                                <td class="py-7 px-6">
                                     <div class="flex items-center gap-4">
-                                        <div class="flex-shrink-0">
-                                            <img src="uploads/<?= ($row['foto'] != '') ? $row['foto'] : 'default.png' ?>" 
-                                                 alt="Foto <?= $row['nama']; ?>" 
-                                                 class="w-12 h-12 rounded-2xl object-cover border-2 border-white shadow-sm group-hover:shadow-md transition-all">
+                                        <div class="w-12 h-12 rounded-2xl bg-slate-200 overflow-hidden border-2 border-white shadow-md">
+                                            <img src="uploads/<?= !empty($row['foto']) ? $row['foto'] : 'default.webp' ?>" class="w-full h-full object-cover">
                                         </div>
-                                        
                                         <div>
-                                            <div class="font-bold text-slate-800 text-lg"><?= $row['nama']; ?></div>
-                                            <?php if ($row['id_user'] == $id_login) : ?>
-                                                <span class="text-[9px] bg-red-100 text-red-800 px-2 py-0.5 rounded-full font-black uppercase tracking-tighter">Profil Saya</span>
-                                            <?php endif; ?>
+                                            <div class="font-extrabold text-slate-900 text-lg group-hover:text-red-900 transition-colors"><?= htmlspecialchars($row['nama']); ?></div>
+                                            <div class="text-[9px] text-slate-400 font-black uppercase tracking-[0.2em]">Verified Alumni</div>
                                         </div>
                                     </div>
                                 </td>
                                 <td class="py-7 px-6">
-                                    <span class="text-sm font-bold text-slate-600"><?= $row['angkatan']; ?></span>
+                                    <span class="px-5 py-2 bg-white rounded-full text-xs font-black text-slate-600 border border-slate-200 shadow-sm uppercase">Angkatan <?= htmlspecialchars($row['angkatan']); ?></span>
                                 </td>
                                 <td class="py-7 px-6">
-                                    <div class="text-sm font-semibold text-slate-500 italic"><?= $row['jurusan']; ?></div>
+                                    <span class="text-sm font-black text-red-900/60 uppercase tracking-widest border-b-2 border-red-50 pb-1"><?= htmlspecialchars($row['jurusan']); ?></span>
                                 </td>
-                                <td class="py-7 px-8 text-center">
-                                    <?php if ($row['id_user'] == $id_login) : ?>
-                                        <a href="edit_profil.php?id=<?= $row['id_alumni']; ?>"
-                                           class="inline-flex items-center gap-2 bg-red-800 text-white px-6 py-2.5 rounded-2xl hover:bg-red-900 transition-all text-xs font-black uppercase tracking-widest shadow-lg shadow-red-900/10 active:scale-95">
-                                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
-                                            Edit Data
-                                        </a>
-                                    <?php else : ?>
-                                        <span class="text-[10px] font-bold text-slate-300 uppercase tracking-widest cursor-not-allowed">Hanya Lihat</span>
-                                    <?php endif; ?>
+                            </tr>
+                            <?php 
+                                } 
+                            } else { ?>
+                            <tr>
+                                <td colspan="4" class="py-32 text-center">
+                                    <div class="flex flex-col items-center justify-center">
+                                        <div class="w-20 h-20 bg-slate-50 text-slate-300 rounded-full flex items-center justify-center mb-6">
+                                            <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                                        </div>
+                                        <h3 class="text-xl font-black text-slate-900 uppercase tracking-tighter">Tidak Dapat Ditemukan</h3>
+                                        <p class="text-sm text-slate-400 font-medium mt-2">Maaf, rekan dengan nama atau jurusan <span class="text-red-700 font-bold">"<?= htmlspecialchars($keyword) ?>"</span> belum terdaftar.</p>
+                                        <a href="dashboard_user.php" class="mt-8 text-[10px] font-black text-red-800 border-2 border-red-800 px-8 py-3 rounded-2xl hover:bg-red-800 hover:text-white transition-all uppercase tracking-widest">Reset Pencarian</a>
+                                    </div>
                                 </td>
                             </tr>
                             <?php } ?>
@@ -158,15 +164,11 @@ $total_alumni = mysqli_num_rows($data);
         </div>
     </main>
 
-    <footer class="bg-white border-t border-slate-200 py-10 mt-12">
-        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
-            <div class="text-center md:text-left">
-                <h3 class="text-red-950 font-black text-xl tracking-tight">Data <span class="text-slate-400 font-light">Alumni</span></h3>
-                <p class="text-slate-400 text-[10px] font-bold uppercase tracking-[0.3em] mt-1">Sistem Informasi Terintegrasi</p>
-            </div>
-            <div class="text-slate-500 text-sm font-medium">
-                © 2026 | Developed by <span class="text-red-800 font-extrabold tracking-widest uppercase ml-1">Raihan Alfiansyah</span>
-            </div>
+    <footer class="bg-white/80 backdrop-blur-md border-t border-slate-100 py-10 mt-12">
+        <div class="max-w-7xl mx-auto px-6 text-center">
+            <p class="text-[10px] font-black text-slate-900  uppercase tracking-[0.2em]">
+                &copy; 2026 SMK Telkom Lampung • Dikembangkan oleh <span class="text-red-800">Raihan Alfiansyah</span>
+            </p>
         </div>
     </footer>
 
