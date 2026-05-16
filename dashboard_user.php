@@ -2,11 +2,13 @@
 session_start();
 include 'koneksi.php';
 
-// 1. PROTEKSI HALAMAN: Cek apakah sudah login
+// 1. PROTEKSI HALAMAN
 if (!isset($_SESSION['login'])) {
     header("Location: login.php");
     exit;
 }
+
+$id_user_login = $_SESSION['id'];
 
 // 2. LOGIKA PENCARIAN
 $keyword = "";
@@ -57,14 +59,16 @@ if (!$data) {
     <nav class="glass-nav sticky top-0 z-50 border-b border-slate-200/50 shadow-sm">
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
             <div class="flex items-center gap-4">
-                <img src="img/Logo.png" alt="Logo" class="h-10 md:h-12 w-auto object-contain">
+                <a href="dashboard_user.php">
+                    <img src="img/Logo.png" alt="Logo" class="h-10 md:h-12 w-auto object-contain">
+                </a>
                 <div class="hidden md:block h-8 w-[1px] bg-slate-200/60 mx-2"></div>
-                <span class="hidden md:block text-[10px] font-black text-slate-900 uppercase tracking-[0.2em]">Direktori Alumni</span>
+                <span class="hidden md:block text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Direktori Alumni</span>
             </div>
 
             <div class="flex items-center gap-4">
                 <div class="hidden sm:flex flex-col items-end mr-2">
-                    <span class="text-[9px] font-black text-slate-900 uppercase tracking-widest">Selamat Datang,</span>
+                    <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest">Selamat Datang,</span>
                     <span class="text-sm font-bold text-red-800"><?= $_SESSION['username']; ?></span>
                 </div>
                 <a href="logout.php" onclick="return confirm('Yakin ingin keluar?')" 
@@ -78,14 +82,14 @@ if (!$data) {
     <main class="flex-grow p-6 md:p-12 lg:px-24">
         <div class="max-w-7xl mx-auto">
             
-            <div class="mb-10 glass-nav sticky top-0 z-40 border-b border-slate-200/50 rounded-lg  text-center md:text-left">
-                <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight">Daftar Rekan Alumni</h2>
-                <p class="text-slate-600 mt-1 font-medium italic">Temukan dan jalin kembali koneksi dengan rekan satu almamater</p>
+            <div class="mb-10 text-center md:text-left">
+                <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight">Rekan Alumni</h2>
+                <p class="text-slate-500 mt-1 font-medium italic">SMK Telkom Lampung Hub</p>
             </div>
 
             <div class="mb-12 flex justify-center">
                 <form action="" method="POST" class="relative w-full max-w-4xl group">
-                    <input type="text" name="keyword" value="<?= htmlspecialchars($keyword) ?>" placeholder="Cari nama rekan atau jurusan..." 
+                    <input type="text" name="keyword" value="<?= htmlspecialchars($keyword) ?>" placeholder="Cari nama, angkatan, atau jurusan..." 
                            class="w-full pl-6 pr-20 py-5 rounded-[2rem] border-2 border-slate-100 bg-white focus:outline-none focus:border-red-800 focus:ring-8 focus:ring-red-900/5 transition-all shadow-xl shadow-slate-200/50 text-lg font-medium">
                     
                     <div class="absolute right-4 top-3 flex items-center gap-2">
@@ -94,22 +98,23 @@ if (!$data) {
                                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path></svg>
                             </a>
                         <?php endif; ?>
-                        <button type="submit" name="search" class="bg-red-800 text-white p-3 rounded-2xl hover:bg-red-900 transition-all active:scale-90">
+                        <button type="submit" name="search" class="bg-red-800 text-white p-3 rounded-2xl hover:bg-red-900 transition-all">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                         </button>
                     </div>
                 </form>
             </div>
 
-            <div class="bg-white/90 backdrop-blur-sm rounded-[2.5rem] overflow-hidden border border-slate-200 shadow-2xl transition-all">
+            <div class="bg-white/90 backdrop-blur-md rounded-[2.5rem] overflow-hidden border border-slate-200 shadow-2xl">
                 <div class="overflow-x-auto">
                     <table class="min-w-full">
                         <thead>
                             <tr class="bg-slate-50/50 border-b border-slate-100">
-                                <th class="py-6 px-8 text-center text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] w-24">No</th>
+                                <th class="py-6 px-8 text-center text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] w-20">No</th>
                                 <th class="py-6 px-6 text-left text-xs font-black text-slate-500 uppercase tracking-widest">Profil Alumni</th>
-                                <th class="py-6 px-6 text-left text-xs font-black text-slate-500 uppercase tracking-widest">Angkatan</th>
+                                <th class="py-6 px-6 text-left text-xs font-black text-slate-500 uppercase tracking-widest w-48">Angkatan</th>
                                 <th class="py-6 px-6 text-left text-xs font-black text-slate-500 uppercase tracking-widest">Jurusan</th>
+                                <th class="py-6 px-6 text-center text-xs font-black text-slate-500 uppercase tracking-widest w-44">Aksi</th>
                             </tr>
                         </thead>
 
@@ -121,38 +126,56 @@ if (!$data) {
                             ?>
                             <tr class="group hover:bg-red-50/30 transition-all duration-300">
                                 <td class="py-7 px-8 text-center">
-                                    <span class="text-sm font-black text-slate-300 group-hover:text-red-700 transition-colors">#<?= str_pad($no++, 2, '0', STR_PAD_LEFT); ?></span>
+                                    <span class="text-sm font-black text-slate-300 group-hover:text-red-700">#<?= $no++; ?></span>
                                 </td>
                                 <td class="py-7 px-6">
                                     <div class="flex items-center gap-4">
                                         <div class="w-12 h-12 rounded-2xl bg-slate-200 overflow-hidden border-2 border-white shadow-md">
-                                            <img src="uploads/<?= !empty($row['foto']) ? $row['foto'] : 'default.webp' ?>" class="w-full h-full object-cover">
+                                            <img src="uploads/<?= !empty($row['foto']) ? $row['foto'] : 'profile.jpg' ?>" class="w-full h-full object-cover">
                                         </div>
                                         <div>
-                                            <div class="font-extrabold text-slate-900 text-lg group-hover:text-red-900 transition-colors"><?= htmlspecialchars($row['nama']); ?></div>
-                                            <div class="text-[9px] text-slate-400 font-black uppercase tracking-[0.2em]">Verified Alumni</div>
+                                            <div class="font-extrabold text-slate-900 text-lg group-hover:text-red-900">
+                                                <?= htmlspecialchars($row['nama']); ?>
+                                                <?php if ($row['id_user'] == $id_user_login) : ?>
+                                                    <span class="text-[9px] bg-red-800 text-white px-2 py-0.5 rounded-md font-black ml-1">SAYA</span>
+                                                <?php endif; ?>
+                                            </div>
+                                            <div class="text-[9px] text-slate-400 font-black uppercase tracking-widest">Verified Alumni</div>
                                         </div>
                                     </div>
                                 </td>
                                 <td class="py-7 px-6">
-                                    <span class="px-5 py-2 bg-white rounded-full text-xs font-black text-slate-600 border border-slate-200 shadow-sm uppercase">Angkatan <?= htmlspecialchars($row['angkatan']); ?></span>
+                                    <span class="inline-flex items-center px-4 py-1.5 bg-white text-slate-600 rounded-lg text-xs font-extrabold border border-slate-200 shadow-sm whitespace-nowrap">
+                                        <svg class="w-3 h-3 mr-2 text-red-800" fill="currentColor" viewBox="0 0 20 20"><path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3z"/></svg>
+                                        ANGKATAN <?= htmlspecialchars($row['angkatan']); ?>
+                                    </span>
                                 </td>
                                 <td class="py-7 px-6">
-                                    <span class="text-sm font-black text-red-900/60 uppercase tracking-widest border-b-2 border-red-50 pb-1"><?= htmlspecialchars($row['jurusan']); ?></span>
+                                    <span class="text-sm font-black text-slate-600 uppercase tracking-widest"><?= htmlspecialchars($row['jurusan']); ?></span>
+                                </td>
+                                <td class="py-7 px-6 text-center">
+                                    <?php if ($row['id_user'] == $id_user_login) : ?>
+                                        <a href="edit_profil.php?id=<?= $row['id_alumni']; ?>" 
+                                           class="inline-block bg-red-800 text-white px-5 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-red-700 transition-all shadow-lg shadow-red-900/20 active:scale-95">
+                                            Edit Profil
+                                        </a>
+                                    <?php else : ?>
+                                        <span class="text-[10px] font-bold text-slate-300 uppercase tracking-widest">Read Only</span>
+                                    <?php endif; ?>
                                 </td>
                             </tr>
                             <?php 
                                 } 
                             } else { ?>
                             <tr>
-                                <td colspan="4" class="py-32 text-center">
-                                    <div class="flex flex-col items-center justify-center">
+                                <td colspan="5" class="py-32 text-center">
+                                    <div class="flex flex-col items-center">
                                         <div class="w-20 h-20 bg-slate-50 text-slate-300 rounded-full flex items-center justify-center mb-6">
                                             <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                                         </div>
                                         <h3 class="text-xl font-black text-slate-900 uppercase tracking-tighter">Tidak Dapat Ditemukan</h3>
-                                        <p class="text-sm text-slate-400 font-medium mt-2">Maaf, rekan dengan nama atau jurusan <span class="text-red-700 font-bold">"<?= htmlspecialchars($keyword) ?>"</span> belum terdaftar.</p>
-                                        <a href="dashboard_user.php" class="mt-8 text-[10px] font-black text-red-800 border-2 border-red-800 px-8 py-3 rounded-2xl hover:bg-red-800 hover:text-white transition-all uppercase tracking-widest">Reset Pencarian</a>
+                                        <p class="text-sm text-slate-400 font-medium mt-2">Data <span class="text-red-700 font-bold">"<?= htmlspecialchars($keyword) ?>"</span> tidak ada di direktori.</p>
+                                        <a href="dashboard_user.php" class="mt-8 text-[10px] font-black text-red-800 border-2 border-red-800 px-8 py-3 rounded-2xl hover:bg-red-800 hover:text-white transition-all uppercase tracking-widest">Lihat Semua</a>
                                     </div>
                                 </td>
                             </tr>
@@ -164,12 +187,10 @@ if (!$data) {
         </div>
     </main>
 
-    <footer class="bg-white/80 backdrop-blur-md border-t border-slate-100 py-10 mt-12">
-        <div class="max-w-7xl mx-auto px-6 text-center">
-            <p class="text-[10px] font-black text-slate-900  uppercase tracking-[0.2em]">
-                &copy; 2026 SMK Telkom Lampung • Dikembangkan oleh <span class="text-red-800">Raihan Alfiansyah</span>
-            </p>
-        </div>
+    <footer class="py-10 text-center">
+        <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em]">
+            Developed by <span class="text-red-800">Raihan Alfiansyah</span>
+        </p>
     </footer>
 
 </body>

@@ -53,12 +53,10 @@ if (!$data) {
         .glass-nav {
             background: rgba(255, 255, 255, 0.7) !important;
             backdrop-filter: blur(12px) saturate(180%);
-            -webkit-backdrop-filter: blur(12px) saturate(180%);
         }
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #f1f1f1; }
         ::-webkit-scrollbar-thumb { background: #7f1d1d; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: #991b1b; }
     </style>
 </head>
 
@@ -68,7 +66,7 @@ if (!$data) {
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
             <div class="flex items-center gap-4">
                 <a href="dashboard_admin.php">
-                    <img src="img/Logo.png" alt="Logo Alumni" class="h-10 md:h-12 w-auto object-contain">
+                    <img src="img/Logo.png" alt="Logo" class="h-10 md:h-12 w-auto object-contain">
                 </a>
                 <div class="hidden md:block h-8 w-[1px] bg-slate-200/60 mx-2"></div>
                 <span class="hidden md:block text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Panel Manajemen</span>
@@ -80,7 +78,7 @@ if (!$data) {
                     <span class="text-sm font-bold text-red-800"><?= $_SESSION['username']; ?></span>
                 </div>
                 <a href="logout.php" onclick="return confirm('Yakin ingin keluar?')" 
-                   class="bg-red-600/90 hover:bg-red-700 backdrop-blur-md transition-all px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest text-white shadow-lg shadow-red-900/20 active:scale-95">
+                   class="bg-red-600 hover:bg-red-700 transition-all px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest text-white shadow-lg active:scale-95">
                     Logout
                 </a>
             </div>
@@ -90,48 +88,46 @@ if (!$data) {
     <main class="flex-grow p-6 md:p-12 lg:px-24">
         <div class="max-w-7xl mx-auto">
             
-            <div class="flex flex-col md:flex-row md:items-center justify-between mb-10 gap-6">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6">
                 <div>
-                    <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight">Data Alumni</h2>
-                    <p class="text-slate-500 mt-1 font-medium italic">Manajemen database alumni SMK Telkom Lampung</p>
+                    <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight">Database Alumni</h2>
+                    <p class="text-slate-500 mt-1 font-medium italic">Kelola informasi alumni SMK Telkom Lampung</p>
                 </div>
                 
-                <a href="tambah.php" class="flex items-center justify-center bg-red-800 hover:bg-red-900 text-white px-8 py-4 rounded-2xl text-sm font-black transition-all hover:scale-105 active:scale-95 shadow-xl shadow-red-900/20 group border border-red-700/50 uppercase tracking-widest">
-                    <svg class="w-5 h-5 mr-2 group-hover:rotate-90 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 4v16m8-8H4"></path>
-                    </svg>
-                    Tambah Alumni
+                <a href="tambah.php" class="inline-flex items-center justify-center bg-red-800 hover:bg-red-900 text-white px-8 py-4 rounded-2xl text-xs font-black transition-all hover:scale-105 shadow-xl shadow-red-900/20 uppercase tracking-widest group">
+                    <svg class="w-5 h-5 mr-2 group-hover:rotate-90 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 4v16m8-8H4"/></svg>
+                    Tambah Data Baru
                 </a>
             </div>
 
-            <div class="mb-12 flex justify-center">
-                <form action="" method="POST" class="relative w-full max-w-4xl group">
+            <div class="mb-12">
+                <form action="" method="POST" class="relative max-w-3xl mx-auto group">
                     <input type="text" name="keyword" value="<?= htmlspecialchars($keyword) ?>" placeholder="Cari nama, angkatan, atau jurusan..." 
                            class="w-full pl-6 pr-20 py-5 rounded-[2rem] border-2 border-slate-100 bg-white focus:outline-none focus:border-red-800 focus:ring-8 focus:ring-red-900/5 transition-all shadow-xl shadow-slate-200/50 text-lg font-medium">
                     
                     <div class="absolute right-4 top-3 flex items-center gap-2">
                         <?php if($keyword != ""): ?>
-                            <a href="dashboard_admin.php" class="p-3 bg-slate-100 hover:bg-red-100 text-slate-400 hover:text-red-700 rounded-2xl transition-all" title="Reset">
+                            <a href="dashboard_admin.php" class="p-3 bg-slate-100 hover:bg-red-100 text-slate-400 hover:text-red-700 rounded-2xl transition-all">
                                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path></svg>
                             </a>
                         <?php endif; ?>
-                        <button type="submit" name="search" class="bg-red-800 text-white p-3 rounded-2xl hover:bg-red-900 transition-all active:scale-90 shadow-lg shadow-red-900/40">
+                        <button type="submit" name="search" class="bg-red-800 text-white p-3 rounded-2xl hover:bg-red-900 transition-all">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                         </button>
                     </div>
                 </form>
             </div>
 
-            <div class="bg-white rounded-[2.5rem] overflow-hidden border border-slate-200 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.06)]">
+            <div class="bg-white/90 backdrop-blur-sm rounded-[2.5rem] overflow-hidden border border-slate-200 shadow-2xl">
                 <div class="overflow-x-auto">
-                    <table class="min-w-full">
+                    <table class="min-w-full border-collapse">
                         <thead>
-                            <tr class="bg-slate-50/50 border-b border-slate-100">
-                                <th class="py-6 px-8 text-center text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] w-24">No</th>
-                                <th class="py-6 px-6 text-left text-xs font-black text-slate-500 uppercase tracking-widest">Biodata Alumni</th>
-                                <th class="py-6 px-6 text-left text-xs font-black text-slate-500 uppercase tracking-widest">Angkatan</th>
-                                <th class="py-6 px-6 text-left text-xs font-black text-slate-500 uppercase tracking-widest">Jurusan</th>
-                                <th class="py-6 px-6 text-center text-xs font-black text-slate-500 uppercase tracking-widest">Opsi Manajemen</th>
+                            <tr class="bg-slate-50/50 border-b border-slate-100 text-left">
+                                <th class="py-6 px-8 text-center text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] w-20">No</th>
+                                <th class="py-6 px-6 text-xs font-black text-slate-500 uppercase tracking-widest">Biodata Alumni</th>
+                                <th class="py-6 px-6 text-xs font-black text-slate-500 uppercase tracking-widest w-48">Angkatan</th>
+                                <th class="py-6 px-6 text-xs font-black text-slate-500 uppercase tracking-widest">Jurusan</th>
+                                <th class="py-6 px-6 text-center text-xs font-black text-slate-500 uppercase tracking-widest w-56">Opsi Manajemen</th>
                             </tr>
                         </thead>
 
@@ -143,27 +139,32 @@ if (!$data) {
                             ?>
                             <tr class="group hover:bg-red-50/30 transition-all duration-300">
                                 <td class="py-7 px-8 text-center">
-                                    <span class="text-sm font-black text-slate-300 group-hover:text-red-700 transition-colors">#<?= str_pad($no++, 2, '0', STR_PAD_LEFT); ?></span>
+                                    <span class="text-sm font-black text-slate-300 group-hover:text-red-700">#<?= str_pad($no++, 2, '0', STR_PAD_LEFT); ?></span>
                                 </td>
                                 <td class="py-7 px-6">
-                                    <div class="flex items-center gap-3">
-                                        <img src="uploads/<?= !empty($row['foto']) ? $row['foto'] : 'default.webp' ?>" class="w-10 h-10 rounded-xl object-cover shadow-sm border border-slate-200">
+                                    <div class="flex items-center gap-4">
+                                        <div class="w-12 h-12 rounded-2xl bg-slate-200 overflow-hidden border-2 border-white shadow-md">
+                                            <img src="uploads/<?= !empty($row['foto']) ? $row['foto'] : 'profile.jpg' ?>" class="w-full h-full object-cover">
+                                        </div>
                                         <div>
-                                            <div class="font-extrabold text-slate-900 text-lg group-hover:text-red-900 transition-colors"><?= htmlspecialchars($row['nama']); ?></div>
-                                            <div class="flex items-center text-[9px] text-slate-400 font-black uppercase tracking-[0.2em]">Verified</div>
+                                            <div class="font-extrabold text-slate-900 text-lg group-hover:text-red-900 transition-colors uppercase tracking-tight"><?= htmlspecialchars($row['nama']); ?></div>
+                                            <div class="text-[9px] text-slate-400 font-black uppercase tracking-[0.2em]">Verified Data</div>
                                         </div>
                                     </div>
                                 </td>
                                 <td class="py-7 px-6">
-                                    <span class="px-5 py-2 bg-slate-100/50 rounded-full text-xs font-black text-slate-600 border border-slate-200 group-hover:bg-white transition-colors uppercase">Angkatan <?= htmlspecialchars($row['angkatan']); ?></span>
+                                    <span class="inline-flex items-center px-4 py-1.5 bg-white text-slate-600 rounded-lg text-xs font-extrabold border border-slate-200 shadow-sm whitespace-nowrap">
+                                        <svg class="w-3 h-3 mr-2 text-red-800" fill="currentColor" viewBox="0 0 20 20"><path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3z"/></svg>
+                                        ANGKATAN <?= htmlspecialchars($row['angkatan']); ?>
+                                    </span>
                                 </td>
                                 <td class="py-7 px-6">
-                                    <span class="text-sm font-black text-red-900/60 uppercase tracking-widest border-b-2 border-red-100 pb-1"><?= htmlspecialchars($row['jurusan']); ?></span>
+                                    <span class="text-sm font-black text-slate-600 uppercase tracking-widest border-b-2 border-red-50 pb-1"><?= htmlspecialchars($row['jurusan']); ?></span>
                                 </td>
                                 <td class="py-7 px-6">
-                                    <div class="flex items-center justify-center gap-3">
-                                        <a href="edit.php?id=<?= $row['id_alumni']; ?>" class="bg-white border border-slate-200 text-slate-600 px-5 py-2.5 rounded-xl hover:bg-amber-500 hover:text-white hover:border-amber-500 transition-all text-[10px] font-black uppercase tracking-widest shadow-sm">Edit</a>
-                                        <a href="delete.php?id=<?= $row['id_alumni']; ?>" onclick="return confirm('Hapus data ini?')" class="bg-white border border-slate-200 text-slate-400 px-5 py-2.5 rounded-xl hover:bg-red-600 hover:text-white hover:border-red-600 transition-all text-[10px] font-black uppercase tracking-widest shadow-sm">Hapus</a>
+                                    <div class="flex items-center justify-center gap-2">
+                                        <a href="edit.php?id=<?= $row['id_alumni']; ?>" class="bg-white border border-slate-200 text-slate-600 px-4 py-2.5 rounded-xl hover:bg-amber-500 hover:text-white hover:border-amber-500 transition-all text-[10px] font-black uppercase tracking-widest shadow-sm">Edit</a>
+                                        <a href="delete.php?id=<?= $row['id_alumni']; ?>" onclick="return confirm('Hapus permanen data ini?')" class="bg-white border border-slate-200 text-slate-400 px-4 py-2.5 rounded-xl hover:bg-red-600 hover:text-white hover:border-red-600 transition-all text-[10px] font-black uppercase tracking-widest shadow-sm">Hapus</a>
                                     </div>
                                 </td>
                             </tr>
@@ -172,19 +173,13 @@ if (!$data) {
                             } else { ?>
                             <tr>
                                 <td colspan="5" class="py-32 text-center">
-                                    <div class="flex flex-col items-center justify-center">
-                                        <div class="w-20 h-20 bg-red-50 text-red-300 rounded-full flex items-center justify-center mb-6">
-                                            <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                                            </svg>
+                                    <div class="flex flex-col items-center">
+                                        <div class="w-20 h-20 bg-slate-50 text-slate-300 rounded-full flex items-center justify-center mb-6">
+                                            <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                                         </div>
-                                        <h3 class="text-xl font-black text-slate-900 uppercase tracking-tighter">Tidak Dapat Ditemukan</h3>
-                                        <p class="text-sm text-slate-400 font-medium mt-2 max-w-sm mx-auto">
-                                            Maaf, data dengan kata kunci <span class="text-red-700 font-bold">"<?= htmlspecialchars($keyword) ?>"</span> tidak ditemukan di database alumni.
-                                        </p>
-                                        <a href="dashboard_admin.php" class="mt-8 text-[10px] font-black text-red-800 border-2 border-red-800 px-8 py-3 rounded-2xl hover:bg-red-800 hover:text-white transition-all uppercase tracking-[0.2em]">
-                                            Tampilkan Semua Data
-                                        </a>
+                                        <h3 class="text-xl font-black text-slate-900 uppercase tracking-tighter">Tidak Ditemukan</h3>
+                                        <p class="text-sm text-slate-400 font-medium mt-2">Maaf, data <span class="text-red-700 font-bold">"<?= htmlspecialchars($keyword) ?>"</span> tidak ada.</p>
+                                        <a href="dashboard_admin.php" class="mt-8 text-[10px] font-black text-red-800 border-2 border-red-800 px-8 py-3 rounded-2xl hover:bg-red-800 hover:text-white transition-all uppercase tracking-widest">Reset</a>
                                     </div>
                                 </td>
                             </tr>
@@ -197,13 +192,13 @@ if (!$data) {
     </main>
 
     <footer class="bg-white/80 backdrop-blur-md border-t border-slate-100 py-10 mt-12">
-        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6 text-center md:text-left">
             <div class="flex items-center gap-3">
                 <img src="img/Logo.png" alt="Logo" class="h-6 opacity-30">
-                <span class="text-[10px] font-black text-slate-300 uppercase tracking-[0.3em]">Sistem Informasi Alumni</span>
+                <span class="text-[10px] font-black text-slate-300 uppercase tracking-[0.3em]">Administrator System</span>
             </div>
             <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">
-                Developed with ❤️ by <span class="text-red-800">Raihan Alfiansyah</span>
+                &copy; 2026 Developed by <span class="text-red-800">Raihan Alfiansyah</span>
             </p>
         </div>
     </footer>
